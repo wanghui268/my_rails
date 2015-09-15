@@ -1,20 +1,22 @@
 Rails.application.routes.draw do
 
-  resources :posts
-      devise_for :user, controllers: {
-        sessions: 'user/sessions'
-      }
-namespace :admin do
-  resources :projects, :organizations
-end
-get 'err_404' ,to: 'index#err_404'
-get 'admin', to: redirect('err_404')
-get 'test', to: redirect('err_404')
-get 'admin', to: redirect('err_404')
+  devise_for :user, controllers: {
+    sessions: 'user/sessions',
+    passwords: 'user/passwords',
+    registrations: 'user/registrations'
+  }
+  namespace :admin do
+    resources :projects, :organizations
+  end
+  get 'admin/index', to: 'admin/welcome#index'
+  get 'err_404' ,to: 'index#err_404'
+  get 'admin', to: redirect('admin/index')
+  get 'test', to: redirect('err_404')
+  get 'guest', to: redirect('err_404')
 
-get ':name' , to: 'admin/account#show', constraints: { name: /[A-Za-z0-9\-_]{1,40}/ }
-get ':name/:project_name', to:'admin/users#project',constraints: { name: /[a-z0-9]{4,20}/ ,
-project_name: /[A-Za-z0-9\-_]{1,40}/}
+  get ':name' , to: 'accounts#show', constraints: { name: /[A-Za-z0-9\-_]{1,40}/ }
+  get ':name/:project_name', to:'projects#show',constraints: { name: /[a-z0-9]{4,20}/ ,
+  project_name: /[A-Za-z0-9\-_]{1,40}/}
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

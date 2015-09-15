@@ -1,4 +1,4 @@
-class Admin::OrganizationsController < Admin::AccountController
+class Admin::OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
 
